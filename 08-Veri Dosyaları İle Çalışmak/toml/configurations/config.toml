@@ -1,0 +1,10 @@
+# filename: config.toml
+[database]
+server = "127.0.0.1"
+port = "5432"
+database = "hr"
+user="postgres"
+password="12345"
+
+# [otherSetting]
+# filePath = "./config.toml"
