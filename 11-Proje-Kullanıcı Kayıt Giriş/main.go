@@ -34,7 +34,7 @@ func main() {
 		pwdConfirmCheck := helper.IsEmpty(pwdConfirm)
 
 		if uNameCheck || emailCheck || pwdCheck || pwdConfirmCheck {
-			fmt.Fprintf(w, "ErrorCode is -10 : There is empty data!")
+			fmt.Fprintf(w, "There is empty data!")
 			return
 		}
 		if pwd == pwdConfirm {
@@ -47,6 +47,27 @@ func main() {
 
 	//login
 	mux.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+
+		email = r.FormValue("email")
+		pwd = r.FormValue("password")
+
+		emailCheck := helper.IsEmpty(email)
+		pwdCheck := helper.IsEmpty(pwd)
+
+		if emailCheck || pwdCheck {
+			fmt.Fprintf(w, "There is empty data!")
+			return
+		}
+
+		dbPwd := "12345!*."
+		dbEmail := "melih@github.com"
+
+		if email == dbEmail && pwd == dbPwd {
+			fmt.Fprintln(w, "Login succesful!")
+		} else {
+			fmt.Fprintln(w, "Login failed!")
+		}
 
 	})
 
