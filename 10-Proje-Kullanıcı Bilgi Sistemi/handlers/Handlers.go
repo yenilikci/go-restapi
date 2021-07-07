@@ -19,7 +19,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	//data loaders
 	users := LoadUsers()
 	interests := LoadInterests()
-	interestsMappings := LoadInterestMappings()
+	interestsMappings := LoadInterestMapping()
 	//işlem
 	var newUsers []User
 	for _, user := range users {
