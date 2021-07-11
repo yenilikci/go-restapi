@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Page.Name}}</title>
+</head>
+<body>
+    <h1>{{.Page.Name}}</h1>
+    {{range .Users}}
+    <p>
+        <strong>{{.ID}} - {{.FirstName}} {{.LastName}}</strong> <i>by {{.Username}}</i>
+        <br>
+        <p>Profil: <a href="{{.Profile}}" target="_blank">{{.Username}}</a></p>
+        {{range .Interests}}
+            <ul>
+                <li>{{.ID}} - {{.Name}}</li>
+            </ul>
+        {{end}}
+     </p>
+    {{end}}
+</body>
+</html>
