@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -74,7 +75,23 @@ func GetProductHandler(w http.ResponseWriter, r *http.Request) {
 
 //HTTP Put - /api/products/{id}
 func PutProductHandler(w http.ResponseWriter, r *http.Request) {
+	var err error
+	vars := mux.Vars(r)
+	key := vars["id"]
 
+	var prodUpd Product
+	err = json.NewDecoder(r.Body).Decode(&prodUpd)
+	CheckError(err)
+
+	if _, ok := productStore[key]; ok {
+		prodUpd.ID, _ = strconv.Atoi(key)
+		prodUpd.ChangedOn = time.Now()
+		delete(productStore, key)
+		productStore[key] = prodUpd
+	} else {
+		log.Printf("Değer bulunamadı: %s", key)
+	}
+	w.WriteHeader(http.StatusOK)
 }
 
 //HTTP Delete - /api/products/{id}
