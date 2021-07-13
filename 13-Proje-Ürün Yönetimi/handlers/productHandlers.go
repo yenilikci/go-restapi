@@ -96,5 +96,12 @@ func PutProductHandler(w http.ResponseWriter, r *http.Request) {
 
 //HTTP Delete - /api/products/{id}
 func DeleteProductHandler(w http.ResponseWriter, r *http.Request) {
-
+	vars := mux.Vars(r)
+	key := vars["id"]
+	if _, ok := productStore[key]; ok {
+		delete(productStore, key)
+	} else {
+		log.Printf("Değer bulunamadı: %s", key)
+	}
+	w.WriteHeader(http.StatusOK)
 }
