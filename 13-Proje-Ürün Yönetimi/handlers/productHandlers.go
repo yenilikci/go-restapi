@@ -8,6 +8,7 @@ import (
 
 	. "../helpers"
 	. "../models"
+	"github.com/gorilla/mux"
 )
 
 var productStore = make(map[string]Product)
@@ -52,7 +53,23 @@ func GetProductsHandler(w http.ResponseWriter, r *http.Request) {
 
 //HTTP Post - /api/products/{id}
 func GetProductHandler(w http.ResponseWriter, r *http.Request) {
+	var product Product
+	//mux Vars
+	vars := mux.Vars(r)
+	key, _ := strconv.Atoi(vars["id"])
+	for _, prd := range productStore {
+		if prd.ID == key {
+			product = prd
+		}
+	}
 
+	//go obj -> json
+	data, err := json.Marshal(product)
+	CheckError(err)
+	//write
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(data)
 }
 
 //HTTP Put - /api/products/{id}
