@@ -35,8 +35,19 @@ func PostProductHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 //HTTP Get - /api/products
-func PostProductsHandler(w http.ResponseWriter, r *http.Request) {
+func GetProductsHandler(w http.ResponseWriter, r *http.Request) {
+	var products []Product
+	for _, product := range productStore {
+		products = append(products, product)
+	}
 
+	//go obj -> json
+	data, err := json.Marshal(products)
+	CheckError(err)
+	//write
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(data)
 }
 
 //HTTP Post - /api/products/{id}
