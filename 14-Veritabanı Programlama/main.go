@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
+	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -31,4 +32,34 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Printf("Last insert id: %d", lastID)
+
+	var (
+		ID        int
+		Username  string
+		Email     string
+		Password  string
+		FirstName string
+		LastName  string
+		BirthDate string
+		IsActive  bool
+	)
+
+	//get data
+	rows, err := db.Query("SELECT * FROM users")
+	if err != nil {
+		log.Fatal(err)
+	}
+	// rows.Columns()
+	for rows.Next() {
+		err = rows.Scan(&ID, &Username, &Email, &Password, &FirstName, &LastName, &BirthDate, &IsActive)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Print("Bulunan satır içeriği: %q", strconv.Itoa(ID)+" "+Username+" "+Email+" "+Password+" "+FirstName+" "+LastName+" "+BirthDate+" "+strconv.FormatBool(IsActive))
+	}
+	//alternative
+	if err = rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+	rows.Close()
 }
