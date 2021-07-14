@@ -92,4 +92,8 @@ func main() {
 		}
 	}
 	log.Printf("Bulunan satır içeriği: %q", strconv.Itoa(ID)+" "+Username+" "+Email+" "+Password+" "+FirstName+" "+LastName+" "+BirthDate+" "+strconv.FormatBool(IsActive))
+
+	//multiple active result set
+	_, err := db.Exec("DELETE FROM xTable1; DELETE FROM xTable2")
+
 }
