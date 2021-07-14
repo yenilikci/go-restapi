@@ -55,11 +55,30 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Print("Bulunan satır içeriği: %q", strconv.Itoa(ID)+" "+Username+" "+Email+" "+Password+" "+FirstName+" "+LastName+" "+BirthDate+" "+strconv.FormatBool(IsActive))
+		log.Printf("Bulunan satır içeriği: %q", strconv.Itoa(ID)+" "+Username+" "+Email+" "+Password+" "+FirstName+" "+LastName+" "+BirthDate+" "+strconv.FormatBool(IsActive))
 	}
 	//alternative
 	if err = rows.Err(); err != nil {
 		log.Fatal(err)
 	}
 	rows.Close()
+
+	//get specific data
+	rows, errQ := db.Query("SELECT * from users WHERE ID = ?", 2)
+	if errQ != nil {
+		log.Fatal(errQ)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		err = rows.Scan(&ID, &Username, &Email, &Password, &FirstName, &LastName, &BirthDate, &IsActive)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Printf("Bulunan satır içeriği: %q", strconv.Itoa(ID)+" "+Username+" "+Email+" "+Password+" "+FirstName+" "+LastName+" "+BirthDate+" "+strconv.FormatBool(IsActive))
+	}
+
+	errQ = rows.Err()
+	if errQ != nil {
+		log.Fatal(errQ)
+	}
 }
