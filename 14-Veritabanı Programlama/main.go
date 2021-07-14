@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"strconv"
 
@@ -114,4 +115,15 @@ func main() {
 		}
 		log.Printf("Bulunan satır içeriği: %q", strconv.Itoa(ID)+" "+Username+" "+Email+" "+Password+" "+FirstName+" "+LastName+" "+BirthDate+" "+strconv.FormatBool(IsActive))
 	}
+
+	//preparing query - single rows
+	stmt, errQ2 := db.Prepare("SELECT * FROM users WHERE ID = ?")
+	if errQ2 != nil {
+		log.Fatal(errQ2)
+	}
+	errX2 := stmt.QueryRow(2).Scan(&ID, &Username, &Email, &Password, &FirstName, &LastName, &BirthDate, &IsActive)
+	if errX2 != nil {
+		log.Fatal(errX2)
+	}
+	fmt.Println(FirstName + " " + LastName)
 }
