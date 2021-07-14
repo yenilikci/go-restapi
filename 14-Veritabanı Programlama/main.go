@@ -126,4 +126,11 @@ func main() {
 		log.Fatal(errX2)
 	}
 	fmt.Println(FirstName + " " + LastName)
+
+	//modifying data - delete
+	res2, _ := db.Exec("DELETE FROM users LIMIT 1")
+	rowCount2, _ := res2.RowsAffected()
+	fmt.Println(rowCount2)
+	lastID2, _ := res2.LastInsertId()
+	fmt.Println(lastID2)
 }
