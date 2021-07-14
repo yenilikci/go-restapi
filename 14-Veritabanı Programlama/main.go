@@ -93,7 +93,25 @@ func main() {
 	}
 	log.Printf("Bulunan satır içeriği: %q", strconv.Itoa(ID)+" "+Username+" "+Email+" "+Password+" "+FirstName+" "+LastName+" "+BirthDate+" "+strconv.FormatBool(IsActive))
 
-	//multiple active result set
-	_, err := db.Exec("DELETE FROM xTable1; DELETE FROM xTable2")
+	// multiple active result set
+	// _, err := db.Exec("DELETE FROM xTable1; DELETE FROM xTable2")
 
+	//preparing queries
+	stmt, errQ := db.Prepare("SELECT * FROM users WHERE ID=?")
+	if errQ != nil {
+		log.Fatal(errQ)
+	}
+	defer stmt.Close()
+	rows, errX := stmt.Query(5)
+	if errX != nil {
+		log.Fatal(errX)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		scanErr := rows.Scan(&ID, &Username, &Email, &Password, &FirstName, &LastName, &BirthDate, &IsActive)
+		if scanErr != nil {
+			log.Fatal(scanErr)
+		}
+		log.Printf("Bulunan satır içeriği: %q", strconv.Itoa(ID)+" "+Username+" "+Email+" "+Password+" "+FirstName+" "+LastName+" "+BirthDate+" "+strconv.FormatBool(IsActive))
+	}
 }
