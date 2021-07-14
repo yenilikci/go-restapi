@@ -81,4 +81,15 @@ func main() {
 	if errQ != nil {
 		log.Fatal(errQ)
 	}
+
+	//query row
+	err = db.QueryRow("SELECT * FROM users limit 1").Scan(&ID, &Username, &Email, &Password, &FirstName, &LastName, &BirthDate, &IsActive)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			//kayıt yoksa
+		} else {
+			log.Fatal(err)
+		}
+	}
+	log.Printf("Bulunan satır içeriği: %q", strconv.Itoa(ID)+" "+Username+" "+Email+" "+Password+" "+FirstName+" "+LastName+" "+BirthDate+" "+strconv.FormatBool(IsActive))
 }
