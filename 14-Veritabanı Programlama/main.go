@@ -121,7 +121,7 @@ func main() {
 	if errQ2 != nil {
 		log.Fatal(errQ2)
 	}
-	errX2 := stmt.QueryRow(2).Scan(&ID, &Username, &Email, &Password, &FirstName, &LastName, &BirthDate, &IsActive)
+	errX2 := stmt.QueryRow(4).Scan(&ID, &Username, &Email, &Password, &FirstName, &LastName, &BirthDate, &IsActive)
 	if errX2 != nil {
 		log.Fatal(errX2)
 	}
@@ -133,4 +133,19 @@ func main() {
 	fmt.Println(rowCount2)
 	lastID2, _ := res2.LastInsertId()
 	fmt.Println(lastID2)
+
+	//insert - prepare,exec
+	stmtV, _ := db.Prepare("INSERT INTO users(Username,Email,Password,FirstName,LastName,BirthDate,IsActive) VALUES(?,?,?,?,?,?,?)")
+	Username = "hjkl"
+	Email = "hjkl@example.com"
+	Password = "12341"
+	FirstName = "abc"
+	LastName = "xyz"
+	BirthDate = "1999.1.1"
+	IsActive = true
+	resV, errStmt := stmtV.Exec(Username, Email, Password, FirstName, LastName, BirthDate, IsActive)
+	if errStmt != nil {
+		log.Fatal(errStmt)
+	}
+	fmt.Println(resV.LastInsertId())
 }
