@@ -148,4 +148,14 @@ func main() {
 		log.Fatal(errStmt)
 	}
 	fmt.Println(resV.LastInsertId())
+
+	//transaction
+	tx, errTx := db.Begin()
+	//...
+	_, errTx = db.Exec("Update ...", args)
+	//...
+	if errTx != nil {
+		log.Fatal(errTx)
+		tx.Rollback()
+	}
 }
